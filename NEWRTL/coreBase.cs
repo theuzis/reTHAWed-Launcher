@@ -14,6 +14,7 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace NEWRTL
@@ -62,33 +63,51 @@ namespace NEWRTL
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 WebClient checkString = new WebClient();
-                string checkUpdater = checkString.DownloadString("https://www.rethawed.com/index.html");
-                var CheckValue = Regex.Match(checkUpdater, "<div class=\"version-text\">(.*)</div>").Groups[1].Value;
+                string checkUpdater = checkString.DownloadString("https://gitgud.io/uzis/rethawed-release-repository/-/raw/master/reTHAWed/hashlist.dat?ref_type=heads");
+                // Split into lines, remove empty ones
+                string[] lines = checkUpdater.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Version is line index 1
+                string NetVersion = lines.Length > 1 ? lines[1].Trim() : "";
+
+                Version vA = new Version(Version);
+                Version vB = new Version(NetVersion);
+
+                // Use it
+                Console.WriteLine(NetVersion);
+                //var CheckValue = Regex.Match(checkUpdater, "<div class=\"version-text\">(.*)</div>").Groups[1].Value;
                 // MessageBox.Show(CheckValue);
                 if (System.IO.File.Exists("version.txt"))
                 {
                     try
                     {
                         Console.WriteLine("Checking for Update...");
-                        if (CheckValue.Contains("<!DOCTYPE HTML>")) //Probably a bad way to check if repo is down. but alas.
+                        if (NetVersion.Contains("<!DOCTYPE HTML>")) //Probably a bad way to check if repo is down. but alas.
                         {
                             Console.WriteLine("~~ GitGud Repository is down? ~~");
                             Console.WriteLine("CANNOT FETCH VERSION STRING FROM REPO");
                             return;
                         }
-                        if (!CheckValue.Contains(Version)) //If a new version is found, tell the user.
+                        if (!NetVersion.Contains(Version)) //If a new version is found, tell the user.
                         {
+                            if (vA > vB)
+                            {
+                                Console.WriteLine("User is on a future update, or dev build. Don't pop update check.");
+                                label2.Text = "Latest Available Public Version: " + NetVersion.ToString();
+                                label3.Text = "Current Version Installed: " + Version;
+                                return;
+                            }
                             Console.WriteLine("~~ Client is out of date! ~~");
-                            Console.WriteLine("Update: " + CheckValue.ToString() + " was found.");
+                            Console.WriteLine("Update: " + NetVersion.ToString() + " was found.");
                             Console.WriteLine("Client is currently on Update: " + Version);
                             System.Media.SystemSounds.Asterisk.Play();
-                            if (MessageBox.Show("A new version of reTHAWed is available!\n\n" + "Current version: " + Version + "\nLatest version: " + CheckValue.ToString() + "\n\nWould you like to update to the latest version?", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                            if (MessageBox.Show("A new version of reTHAWed is available!\n\n" + "Current version: " + Version + "\nLatest version: " + NetVersion.ToString() + "\n\nWould you like to update to the latest version?", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                             {
                                 if (System.IO.File.Exists("Updater.exe")) //If updater exists in path, run it if the user said yes.
                                 {
                                     Console.WriteLine("~~ Exiting launcher and updating reTHAWed... ~~");
                                     System.Diagnostics.Process.Start("Updater.exe");
-                                    Application.Exit();
+                                    System.Windows.Forms.Application.Exit();
                                     Environment.Exit(0);
                                 }
                                 else //else if the file doesnt exist, tell the user that it doesn't and exit the launcher.
@@ -103,7 +122,7 @@ namespace NEWRTL
                             else //If user said no, skip the updater and change labels to show that there is a new update available..
                             {
                                 Console.WriteLine("User chose not to update, skipping.");
-                                label2.Text = "New Version Available: " + CheckValue.ToString();
+                                label2.Text = "New Version Available: " + NetVersion.ToString();
                                 label3.Text = "Current Version Installed: " + Version;
                             }
                         }
@@ -139,7 +158,7 @@ namespace NEWRTL
                 {
                     Console.WriteLine("VERSION.TXT DOES NOT EXIST IN USERS FILES, CREATING");
                     string path = @"version.txt";
-                    File.AppendAllText(path, CheckValue);
+                    File.AppendAllText(path, NetVersion);
                     label2.Hide();
                     label3.Text = "Unable to check for update.";
                     // Console.WriteLine("THIS ALSO ISN'T A FATAL ERROR");
@@ -210,7 +229,7 @@ namespace NEWRTL
         private void button5_Click(object sender, EventArgs e)
         { // Exit the app.
             Environment.Exit(0);
-            Application.Exit();
+            System.Windows.Forms.Application.Exit();
         }
 
         // Fancy Button Highlight Stuff.
@@ -270,7 +289,7 @@ namespace NEWRTL
             if (File.Exists("reTHAWed.exe"))
             {
                 System.Diagnostics.Process.Start("reTHAWed.exe");
-                Application.Exit();
+                System.Windows.Forms.Application.Exit();
                 Environment.Exit(0);
             }
             else
@@ -303,7 +322,7 @@ namespace NEWRTL
             if (File.Exists("Updater.exe"))
             {
                 System.Diagnostics.Process.Start("Updater.exe");
-                Application.Exit();
+                System.Windows.Forms.Application.Exit();
                 Environment.Exit(0);
             }
             else
