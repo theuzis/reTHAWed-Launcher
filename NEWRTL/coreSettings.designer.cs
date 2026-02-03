@@ -103,6 +103,7 @@
             this.nopreviewlabel = new System.Windows.Forms.Label();
             this.OptionNameTag = new System.Windows.Forms.Label();
             this.OptionsDesc = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.OptionsBox.SuspendLayout();
             this.blackPreviewBG.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewImage)).BeginInit();
@@ -217,6 +218,7 @@
             this.OptionsList.SelectedIndexChanged += new System.EventHandler(this.OptionsList_SelectedIndexChanged);
             this.OptionsList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OptionsList_KeyUp);
             this.OptionsList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OptionsList_MouseDoubleClick);
+            this.OptionsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OptionsList_MouseDown);
             // 
             // INI
             // 
@@ -237,12 +239,14 @@
             // OptionsBox
             // 
             this.OptionsBox.BackColor = System.Drawing.Color.Transparent;
+            this.OptionsBox.Controls.Add(this.button2);
             this.OptionsBox.Controls.Add(this.OptComboBox);
             this.OptionsBox.Controls.Add(this.blackPreviewBG);
             this.OptionsBox.Controls.Add(this.OptionNameTag);
             this.OptionsBox.Controls.Add(this.OptionsDesc);
             this.OptionsBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.OptionsBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OptionsBox.ForeColor = System.Drawing.SystemColors.Control;
             this.OptionsBox.Location = new System.Drawing.Point(284, 0);
             this.OptionsBox.Name = "OptionsBox";
             this.OptionsBox.Size = new System.Drawing.Size(616, 720);
@@ -339,6 +343,21 @@
             this.OptionsDesc.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.OptionsDesc.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Gainsboro;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.button2.Location = new System.Drawing.Point(11, 608);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(216, 40);
+            this.button2.TabIndex = 11;
+            this.button2.Text = "Use Native Resolution";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button1_Click);
+            // 
             // coreSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -381,5 +400,6 @@
         private System.Windows.Forms.Label OptionsDesc;
         private System.Windows.Forms.ColumnHeader INI;
         private System.Windows.Forms.ColumnHeader innit;
+        private System.Windows.Forms.Button button2;
     }
 }

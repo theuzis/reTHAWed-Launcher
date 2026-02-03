@@ -88,17 +88,20 @@ namespace NEWRTL
                                     OptComboBox.Visible = false;
                                     previewImage.Visible = false;
                                     Animate(previewImage, false);
+                                    button2.Visible = false;
                                     break;
 
                                 case "ResolutionNBL":
                                     OptComboBox.Visible = false;
                                     previewImage.Visible = false;
                                     Animate(previewImage, false);
+                                    button2.Visible = true;
 
                                     break;
 
                                 case "ComboBox":
                                     previewImage.Visible = false;
+                                    button2.Visible = false;
                                     Animate(previewImage, false);
                                     // -- Flush Combo Box and re-add items depending on the option.
                                     OptComboBox.Items.Clear();
@@ -160,6 +163,7 @@ namespace NEWRTL
 
                                 case "ComboBoxIMG":
                                     previewImage.Visible = true;
+                                    button2.Visible = false;
                                     previewImageAPI(item.SubItems[0].Text);
                                     Animate(previewImage, false);
                                     // -- Flush Combo Box and re-add items depending on the option.
@@ -221,6 +225,7 @@ namespace NEWRTL
 
                                 case "IMGNonBoolean":
                                     OptComboBox.Visible = false;
+                                    button2.Visible = false;
                                     previewImageAPI(item.SubItems[0].Text);
                                     Animate(previewImage, false);
 
@@ -228,18 +233,21 @@ namespace NEWRTL
 
                                 case "IMG":
                                     OptComboBox.Visible = false;
+                                    button2.Visible = false;
                                     previewImageAPI(item.SubItems[0].Text);
                                     Animate(previewImage, false);
                                     break;
 
                                 case "GIF":
                                     OptComboBox.Visible = false;
+                                    button2.Visible = false;
                                     previewImageAPI(item.SubItems[0].Text);
                                     Animate(previewImage, true);
                                     break;
 
                                 default:
                                     OptComboBox.Visible = false;
+                                    button2.Visible = false;
                                     previewImage.Visible = false;
                                     Animate(previewImage, false);
                                     break;
@@ -278,7 +286,6 @@ namespace NEWRTL
 
         private void ListView1_DrawItem(object sender, DrawListViewItemEventArgs e)
         {
-            // Leave this empty if you're drawing subitems (as below)
         }
 
         private void ListView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
@@ -315,6 +322,8 @@ namespace NEWRTL
             blackPreviewBG.MouseMove += Form1_MouseMove;
             previewImage.Visible = false;
             OptionNameTag.Visible = false;
+            OptionsList.FullRowSelect = true; // Why is this bullshit hidden
+            button2.Visible = false;
             //ToggleOptionButton.Visible = false;
             //EditNonBoolValue.Visible = false;
             OptComboBox.Visible = false;
@@ -416,19 +425,25 @@ namespace NEWRTL
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // TODO: FIX ME
-            /*
+            if (OptionsList.SelectedItems.Count == 0)
+                return;
+
+            if (OptionNameTag.Text != "ResolutionX" &&
+                OptionNameTag.Text != "ResolutionY")
+                return;
+
             string screenWidth = Screen.PrimaryScreen.Bounds.Width.ToString();
             string screenHeight = Screen.PrimaryScreen.Bounds.Height.ToString();
-            if (OptionNameTag.Text == "ResolutionX")
-            {
-                EditNonBoolValue.Text = screenWidth;
-            }
-            else if (OptionNameTag.Text == "ResolutionY")
-            {
-                EditNonBoolValue.Text = screenHeight;
-            }*/
+
+            editBox.Text = (OptionNameTag.Text == "ResolutionX")
+                ? screenWidth
+                : screenHeight;
+
+            editBox.Visible = true;
+            editBox.Focus();
+            editBox.SelectAll();
         }
+
 
         private void QualityBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -656,6 +671,11 @@ namespace NEWRTL
         {
             e.Cancel = true; // Cancel the resizing
             e.NewWidth = OptionsList.Columns[e.ColumnIndex].Width; // Set it to the current width
+        }
+
+        private void OptionsList_MouseDown(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }
