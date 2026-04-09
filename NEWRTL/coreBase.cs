@@ -63,7 +63,7 @@ namespace NEWRTL
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 WebClient checkString = new WebClient();
-                string checkUpdater = checkString.DownloadString("https://gitgud.io/uzis/rethawed-release-repository/-/raw/master/reTHAWed/hashlist.dat?ref_type=heads");
+                string checkUpdater = checkString.DownloadString("https://gitgud.io/10k-rising/rethawed-release-repository/-/raw/master/reTHAWed/hashlist.dat?ref_type=heads");
                 // Split into lines, remove empty ones
                 string[] lines = checkUpdater.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
